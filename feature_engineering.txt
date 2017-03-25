@@ -1,0 +1,13 @@
+Techniques for feature engineering and feature selection
+
+Some columns are very similar, we should cross-correlate them to test:
+	Col Y and Z (extraction_type / extraction_type_group)
+	Col AH and AI (quantity and quantity_group)
+	Col AJ and AK (source and source_type)
+	Col AM and AN (water point and waterpoint_type)
+	*there may be more*
+
+We should test different variables and see which ones have predictive power, and which ones do not, and then train our model on those ones that do.
+
+Some columns have different labels for the same thing, like ‘Govt’, ‘GOVER’, ‘gov’, or ‘government’, need to get them to read the same so they are treated as the same factors.
+
