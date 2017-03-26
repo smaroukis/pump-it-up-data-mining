@@ -4,7 +4,7 @@ Some columns are very similar, we should cross-correlate them to test:
 	Col Y and Z (extraction_type / extraction_type_group)
 	Col AH and AI (quantity and quantity_group)
 	Col AJ and AK (source and source_type)
-	Col AM and AN (water point and waterpoint_type)
+	Col AM and AN (water point type and waterpoint_type_group)
 	*there may be more*
 
 We should test different variables and see which ones have predictive power, and which ones do not, and then train our model on those ones that do.
