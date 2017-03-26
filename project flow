@@ -3,18 +3,50 @@ This details the feature selection process and methods used to begin training ou
 Part I: Feature Selection & Engineering
   1. Reducing categories
     a. Determine which categories are over 99% cross-correlated, and remove all but one of each set of highly
-    cross-correlated categories from the dataset.
+    cross-correlated categories from the dataset. Some categories may have a low cross-correlation value at first because one is a more
+    general case than the other. In this case, we look at the proportionality between labels of each category, and if there are multiple
+    labels that have a 100% mapping to another label in the other category, we are ensured that the two categories are sufficiently 
+    cross-correlated. These categories are:
+      extraction_type and extraction_type_group
+      quantity and quantity_group
+      source and source_type
+      waterpoint and waterpoint_type
+      quality and quality_group
+      region and region_code
+      payment and payment_type  
     b. Determine which categories have only 1 value, and remove those categories:
       recorded_by
     c. Determine which categories have no meaning, and remove those categories:
       num_private
     d. Determine which categories have little predictive power, and remove those categories:
       public_meeting
-  2. Filling in zeros: Determine which categories have zero values where there shouldn't be zeros, and fill those in with averag
-  values based on the context of that category. These averages may be calculated differently for different categories.
+      scheme_name
+      amount_tsh
+  2. Filling in zeros and nulls: Determine which categories have zero values where there shouldn't be zeros / categorical categories that have null values,
+  and fill those in with average values based on the context of that category. These averages may be calculated differently for different 
+  categories. These categories are:
     a. construction_year: These zeros can be filled in using the average of all the non-zero elements in the category
-    b. latitude, longitude, gps_height, and population: zeros can be filled using the average respective latitude or longitude within each district_code
-    c. amount_tsh: 
-    d. funder:
-    e. installer fefefefawef
+    b. latitude, longitude, gps_height, and population: zeros can be filled using the average respective latitude or longitude within each 
+    district_code
+    c. funder:
+    d. installer:
+  3. Linear Discriminant Analysis (LDA): Dimensionality reduction on those categories that are continuous in nature but have discretized 
+  values. We will do this by ___ . These categories are:
+    latitude
+    longitude
+    gps_height
+  4. Category editing: Some categories have labels that mean the same thing, but are written differently, so we will have to determine 
+  which ones those are and create a uniform label for all those labels that imply the same thing but are notated differently. These 
+  categories and labels are:
+    a. funder:
+    b. installer: 
+  5. Converting categorical and temporal categories into integers: We want to turn our dataset into a large matrix for MATLAB to work with,
+  so we will assign integer values to each different label in a category. We will do this in MATLAB via ______ . These categories are:
+    date_recorded, funder, installer, wpt_name, basin, subvillage, region, lga, ward, public_meeting, recorded_by, scheme_management,
+    scheme_name, extraction_type, extraction_type_group, extraction_type_class, management,	management_group, payment, payment_type,
+    water_quality, quality_group, quantity, quantity_group, source, source_type, source_class, waterpoint_type, waterpoint_type_group
+    
+Part II: Training the dataset
+
+    
  
