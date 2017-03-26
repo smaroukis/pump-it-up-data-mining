@@ -11,3 +11,10 @@ We should test different variables and see which ones have predictive power, and
 
 Some columns have different labels for the same thing, like ‘Govt’, ‘GOVER’, ‘gov’, or ‘government’, need to get them to read the same so they are treated as the same factors.
 
+Quantity vs. Status_group:
+                functional functional needs repair non functional
+  dry          0.025136087             0.005923791    0.968940122
+  enough       0.652323269             0.072319653    0.275357078
+  insufficient 0.523233525             0.095842422    0.380924053
+  seasonal     0.574074074             0.102716049    0.323209877
+  unknown      0.269961977             0.017743980    0.712294043
