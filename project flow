@@ -1,0 +1,20 @@
+This details the feature selection process and methods used to begin training our data.
+
+Part I: Feature Selection & Engineering
+  1. Reducing categories
+    a. Determine which categories are over 99% cross-correlated, and remove all but one of each set of highly
+    cross-correlated categories from the dataset.
+    b. Determine which categories have only 1 value, and remove those categories:
+      recorded_by
+    c. Determine which categories have no meaning, and remove those categories:
+      num_private
+    d. Determine which categories have little predictive power, and remove those categories:
+      public_meeting
+  2. Filling in zeros: Determine which categories have zero values where there shouldn't be zeros, and fill those in with averag
+  values based on the context of that category. These averages may be calculated differently for different categories.
+    a. construction_year: These zeros can be filled in using the average of all the non-zero elements in the category
+    b. latitude, longitude, gps_height, and population: zeros can be filled using the average respective latitude or longitude within each district_code
+    c. amount_tsh: 
+    d. funder:
+    e. installer fefefefawef
+ 
