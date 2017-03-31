@@ -22,16 +22,20 @@ Part I: Feature Selection & Engineering
       public_meeting
       scheme_name
       amount_tsh
-  2. Filling in zeros and nulls: Determine which categories have zero values where there shouldn't be zeros / categorical categories that have null values,
-  and fill those in with average values based on the context of that category. These averages may be calculated differently for different 
-  categories. These categories are:
+  2. Filling in zeros and nulls: Determine which categories have zero values where there shouldn't be zeros / categorical categories 
+  that have null values, and fill those in with average values based on the context of that category. These averages may be calculated 
+  differently for different categories. These categories are:
     a. construction_year: These zeros can be filled in using the average of all the non-zero elements in the category
     b. latitude, longitude, gps_height, and population: zeros can be filled using the average respective latitude or longitude within each 
     district_code
     c. funder:
     d. installer:
   3. Linear Discriminant Analysis (LDA): Dimensionality reduction on those categories that are continuous in nature but have discretized 
-  values. We will do this by ___ . These categories are:
+  values. We will do this using the 'classify' command in MATLAB's Neural Network Toolbox. class = classify(sample,training,group) 
+  classifies each row of the data in sample into one of the groups in training. sample and training must be matrices with the same number 
+  of columns. group is a grouping variable for training. class = classify(sample,training,group,'type') allows you to specify the type of
+  discriminant function. Specify type inside single quotes. For our purposes, 'type' will be linear, which fits a multivariate normal 
+  density to each group, with a pooled estimate of covariance. This is the default. The categories that LDA will be applied to are:
     latitude
     longitude
     gps_height
