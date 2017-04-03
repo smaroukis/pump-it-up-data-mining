@@ -49,7 +49,8 @@ Part I: Feature Selection & Engineering
     a. funder:
     b. installer: 
   5. Converting categorical and temporal categories into integers: We want to turn our dataset into a large matrix for MATLAB to work with,
-  so we will assign integer values to each different label in a category. We will do this in MATLAB via ______ . These categories are:
+  so we will assign integer values to each different label in a category. We will do this in Python using a dictionary mapping of unique 
+  string values to unique integers. These categories are:
     date_recorded, funder, installer, wpt_name, basin, subvillage, region, lga, ward, public_meeting, recorded_by, scheme_management,
     scheme_name, extraction_type, extraction_type_group, extraction_type_class, management,	management_group, payment, payment_type,
     water_quality, quality_group, quantity, quantity_group, source, source_type, source_class, waterpoint_type, waterpoint_type_group
