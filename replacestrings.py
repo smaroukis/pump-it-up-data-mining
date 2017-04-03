@@ -19,14 +19,12 @@ unique_sets = train_values_lower.apply(set)
 for i in string_col:
 	unique_list.extend(list(unique_sets.iloc[i]))
 
-#Sort the list
-unique_list.sort()
-
 #Eliminate repeats in between columns
 unique_list = list(set(unique_list))
 
 #Create a mapping of the strings to their replacement ints
 replace_list = range(len(unique_list))
+replace_list = [k+55000 for k in replace_list]
 string_dict = dict(zip(unique_list, replace_list))
 
 #Output dictionary to csv
