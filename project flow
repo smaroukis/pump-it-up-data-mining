@@ -6,8 +6,12 @@ Part I: Feature Selection & Engineering
     cross-correlated categories from the dataset. Some categories may have a low cross-correlation value at first because one is a more
     general case than the other. In this case, we look at the proportionality between labels of each category, and if there are multiple
     labels that have a 100% mapping to another label in the other category, we are ensured that the two categories are sufficiently 
-    cross-correlated. These categories are:
-      extraction_type and extraction_type_group
+    cross-correlated. In some cases, there are categories that are more specific instances of other categories, as in the case of
+    extraction_type_group -> extraction_type_class -> extraction_type (ordered from most general to most specific). For our first times 
+    we train the model, we will use the most specific cateogry, giving us an increased resolution of a category at the expense of adding
+    additional variables and computation time. We will eventually test the model with using the more general categories and observe any
+    change in predictive power or accuracy. These categories are:
+      extraction_type and extraction_type_class and extraction_type_group
       quantity and quantity_group
       source and source_type
       waterpoint and waterpoint_type
