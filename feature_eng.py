@@ -29,7 +29,7 @@ def check_same(a, b):
     print('{pct:.{digits}f}% of elements are the same'.format(pct=100*(1-check_false/len(check)), digits=2))
 
 def col2num(col):
-"""turns excel columns A-Z to 0 indexed integers"""
+    """turns excel columns A-Z to 0 indexed integers"""
     num=0
     for c in col:
         if c in string.ascii_letters:
@@ -44,6 +44,8 @@ def freq_tab(a,b):
 def create_merge_dict(_list, cutoff):
     """takes in a list of strings and creates nested dict of key:[val1, val2...] where val_i is a fuzzy string match with key"""
     _list=sorted(_list)
+    print("--create_merge_dict()--> creating nested dict of strings to merge\n")
+    print("---> Number of items in the list to merge: {} \n".format(len(_list)))
     check_dict={}
     N=len(_list)
     i=iter(range(0,N))
@@ -78,3 +80,5 @@ def create_merge_dict(_list, cutoff):
             break
 
     return check_dict
+
+#def replace_in_df(_df, _merge_dict):
