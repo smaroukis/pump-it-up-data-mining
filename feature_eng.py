@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import string
 from fuzzywuzzy import fuzz, process
+import pdb
 
 def load_training_labels():
     return pd.read_csv('data/Training Set Labels.csv')
@@ -65,7 +66,6 @@ def create_merge_dict(_list, cutoff):
         except StopIteration: # j goes off
             # last element at N-1
             while True:
-            #break
                 try:
                     ii=next(i)
                     check=_list[ii]
@@ -74,11 +74,18 @@ def create_merge_dict(_list, cutoff):
                         score=fuzz.token_sort_ratio(check, x)
                         if score > cutoff:
                             matched.update({x:score})
-                    if matched!=[]: check_dict.update({check:matched})
+                    if matched!={}: check_dict.update({check:matched})
                 except StopIteration: # i goes off, may have empty string comparison at end
                     break
-            break
+            return check_dict
 
-    return check_dict
+if __name__=="__main__":
+    pdb.set_trace()
+
+    train=load_training_values()
+    installers = [i for i in train["installer"].unique() if ((type(i)!=int) and (type(i)!=float))]
+    merge_installers = create_merge_dict(installers, 79)
+            # made a change
+
 
 #def replace_in_df(_df, _merge_dict):
