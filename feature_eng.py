@@ -79,13 +79,18 @@ def create_merge_dict(_list, cutoff):
                     break
             return check_dict
 
+def merge_replace(_df, _merge_dict):
+    """takes in a dataframe and a dictionary (see create_merge_dict) and replaces all the list of values with the keys"""
+
+    for i in reversed(sorted(_merge_dict)):
+        against_list=list(_merge_dict[i])
+        # find in dataframe
+        df=_df.replace(against_list, i)
+        return df
+
 if __name__=="__main__":
     pdb.set_trace()
 
     train=load_training_values()
     installers = [i for i in train["installer"].unique() if ((type(i)!=int) and (type(i)!=float))]
     merge_installers = create_merge_dict(installers, 79)
-            # made a change
-
-
-#def replace_in_df(_df, _merge_dict):
