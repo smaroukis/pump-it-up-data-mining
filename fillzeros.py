@@ -44,12 +44,14 @@ for i in districts:
 col_means = district_means.mean()
 col_means['population'] = col_means['population'].round()
 print(col_means)
-dict0 = {'gps_height': col_means['gps_height'], 'longitude': district_means['longitude'][0],
-				'latitude': district_means['latitude'][0], 'population': col_means['population']}
+
+dict0 = {'gps_height': col_means['gps_height'], 'longitude': district_means.iloc[0]['longitude'],
+				'latitude': district_means.iloc[0]['latitude'], 'population': col_means['population']}
+
+dict80 = {'gps_height': col_means['gps_height'], 'longitude': district_means.iloc[19]['longitude'],
+				'latitude': district_means.iloc[19]['latitude'], 'population': col_means['population']}
 train_values.loc[train_values['district_code'] == 0, :] = train_values.loc[train_values['district_code'] == 0, :].fillna(dict0)
-dict1 = {'gps_height': col_means['gps_height'], 'longitude': district_means['longitude'][1],
-				'latitude': district_means['latitude'][1], 'population': col_means['population']}
-train_values.loc[train_values['district_code'] == 80, :] = train_values.loc[train_values['district_code'] == 80, :].fillna(dict1)
+train_values.loc[train_values['district_code'] == 80, :] = train_values.loc[train_values['district_code'] == 80, :].fillna(dict80)
 
 #Output to csv
 train_values.to_csv("Values Final.csv")
