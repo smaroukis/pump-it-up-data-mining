@@ -42,6 +42,17 @@ def freq_tab(a,b):
     ft=pd.crosstab(index=a, columns=b, margins=True)
     return ft/ft.ix['All']
 
+def diff_df(df1,df2):
+    # TODO: ignore NANs
+    ne_stacked=(df1!=df2).stack()
+    changed=ne_stacked[ne_stacked]
+    changed.index.names=['id','col']
+    diff_loc=np.where(df1!=df2)
+    chto=df1.values[diff_loc]
+    chfrom=df2.values[diff_loc]
+    df = pd.DataFrame({'from':chfrom, 'to':chto}, index=changed.index)
+    return df.dropna()
+
 def create_merge_dict(_list, cutoff):
     """takes in a list of strings and creates nested dict of key:[val1, val2...] where val_i is a fuzzy string match with key"""
     _list=sorted(_list)
@@ -74,19 +85,20 @@ def create_merge_dict(_list, cutoff):
                         score=fuzz.token_sort_ratio(check, x)
                         if score > cutoff:
                             matched.update({x:score})
-                    if matched!={}: check_dict.update({check:matched})
+                    # if matched!={}: check_dict.update({check:matched})
                 except StopIteration: # i goes off, may have empty string comparison at end
                     break
             return check_dict
 
-def merge_replace(_df, _merge_dict):
+def merge_replace(_df, _merge_dict, _col):
     """takes in a dataframe and a dictionary (see create_merge_dict) and replaces all the list of values with the keys"""
-
+    # TODO working on only replacing one column
+    df=_df
     for i in reversed(sorted(_merge_dict)):
         against_list=list(_merge_dict[i])
         # find in dataframe
-        df=_df.replace(against_list, i)
-        return df
+        df=df.replace(against_list, i)
+    return df
 
 if __name__=="__main__":
     pdb.set_trace()
@@ -94,3 +106,6 @@ if __name__=="__main__":
     train=load_training_values()
     installers = [i for i in train["installer"].unique() if ((type(i)!=int) and (type(i)!=float))]
     merge_installers = create_merge_dict(installers, 79)
+    train2=merge_replace(train, merge_installers)
+    diff = diff_df(train, train2)
+    print(diff)
