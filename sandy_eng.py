@@ -58,3 +58,30 @@ def dataframe_tolower(train_values):
 	"""Converts strings in dataframe to lowercase"""
 	train_values = train_values.applymap(lambda x: x if type(x)!=str else x.lower())
 	return train_values
+
+def strings_to_ints(string_col, train_values):
+	"""Takes in a list of the string column indices and the main dataframe, returns the dataframe with strings replaced with unique ints. Creates a .csv of the string to int mapping"""
+	#NOTE: Make sure csv string columns are entirely strings, ie. don't contain 0's
+	unique_list = []
+
+	#Get unique values for each column
+	unique_sets = train_values.apply(set)
+
+	#Get unique strings of Training Set columns into one list
+	for i in string_col:
+		unique_list.extend(list(unique_sets.iloc[i]))
+
+	#Eliminate repeats in between columns
+	unique_list = list(set(unique_list))
+
+	#Create a mapping of the strings to their replacement ints
+	replace_list = range(len(unique_list))
+	replace_list = [k+55000 for k in replace_list]
+	string_dict = dict(zip(unique_list, replace_list))
+
+	#Output dictionary to csv
+	dictionary = pd.DataFrame.from_dict(string_dict, orient="index")
+	dictionary.to_csv("StringDictionary.csv")
+
+	train_values = train_values.applymap(lambda s: string_dict.get(s) if s in string_dict else s)
+	return train_values
