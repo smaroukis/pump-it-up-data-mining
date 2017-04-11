@@ -97,7 +97,7 @@ def merge_replace(_df, _merge_dict, _col):
     for i in reversed(sorted(_merge_dict)):
         against_list=list(_merge_dict[i])
         # find in dataframe
-        df=df.replace(against_list, i)
+        df[_col]=df[_col].replace(against_list, i)
     return df
 
 if __name__=="__main__":
