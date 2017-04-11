@@ -53,3 +53,8 @@ def zeros_public_meeting(train_values):
 	train_values['public_meeting'] = train_values['public_meeting'].replace(0, "Neutral")
 	train_values['public_meeting'] = train_values['public_meeting'].replace(np.nan, "Neutral")
 	return train_values
+
+def dataframe_tolower(train_values):
+	"""Converts strings in dataframe to lowercase"""
+	train_values = train_values.applymap(lambda x: x if type(x)!=str else x.lower())
+	return train_values
