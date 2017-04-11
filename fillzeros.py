@@ -53,5 +53,9 @@ dict80 = {'gps_height': col_means['gps_height'], 'longitude': district_means.ilo
 train_values.loc[train_values['district_code'] == 0, :] = train_values.loc[train_values['district_code'] == 0, :].fillna(dict0)
 train_values.loc[train_values['district_code'] == 80, :] = train_values.loc[train_values['district_code'] == 80, :].fillna(dict80)
 
+#Replace 0's in Public Meeting columns with "Neutral"
+train_values['public_meeting'] = train_values['public_meeting'].replace(0, "Neutral")
+train_values['public_meeting'] = train_values['public_meeting'].replace(np.nan, "Neutral")
+
 #Output to csv
 train_values.to_csv("Values Final.csv")
