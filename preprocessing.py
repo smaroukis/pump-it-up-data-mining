@@ -19,4 +19,8 @@ if __name__=="__main__":
     # Replace Empty Strings
     train_new=df_replace_emptystr(train_new)
 
+    # Fuzzy String Matching for Installer, Funder
+
+    #  Create Dummy Columns
+
     pass
