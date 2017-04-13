@@ -43,7 +43,6 @@ def freq_tab(a,b):
     return ft/ft.ix['All']
 
 def diff_df(df1,df2):
-    # TODO: ignore NANs
     ne_stacked=(df1!=df2).stack()
     changed=ne_stacked[ne_stacked]
     changed.index.names=['id','col']
@@ -52,6 +51,14 @@ def diff_df(df1,df2):
     chfrom=df2.values[diff_loc]
     df = pd.DataFrame({'from':chfrom, 'to':chto}, index=changed.index)
     return df.dropna()
+
+def check_nulls(df):
+    nulls=df.isnull().sum(axis=0)
+    zeros=(df==0).sum(axis=0)
+    df_nulls=pd.concat([nulls, zeros], axis=1)
+    df_nulls=df_nulls.loc[(df_nulls!=0).any(axis=1)]
+    df_nulls.columns(['Null','Zeros'])
+    return df_nulls
 
 def create_merge_dict(_list, cutoff):
     """takes in a list of strings and creates nested dict of key:[val1, val2...] where val_i is a fuzzy string match with key"""
@@ -99,6 +106,7 @@ def merge_replace(_df, _merge_dict, _col):
         # find in dataframe
         df[_col]=df[_col].replace(against_list, i)
     return df
+
 
 if __name__=="__main__":
     pdb.set_trace()
