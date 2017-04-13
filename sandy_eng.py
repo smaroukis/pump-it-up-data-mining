@@ -3,7 +3,7 @@ import numpy as np
 
 def zeros_means(train_values):
 	"""Returns the dataframe with the gps_height, longitude, latitude, and population columns edited to replace zeros with mean values"""
-	
+
 	district_values = train_values.filter(['district_code', 'gps_height','longitude','latitude','population'], axis=1)
 	district_values = district_values.sort_values(by='district_code')
 
@@ -49,9 +49,9 @@ def zeros_means(train_values):
 	return train_values
 
 def zeros_public_meeting(train_values):
-	"""Replace zeros in public_meeting column with 'Neutral'"""
-	train_values['public_meeting'] = train_values['public_meeting'].replace(0, "Neutral")
-	train_values['public_meeting'] = train_values['public_meeting'].replace(np.nan, "Neutral")
+	"""Replace zeros in public_meeting column with 'null'"""
+	train_values['public_meeting'] = train_values['public_meeting'].replace(0, "null")
+	train_values['public_meeting'] = train_values['public_meeting'].replace(np.nan, "null")
 	return train_values
 
 def dataframe_tolower(train_values):

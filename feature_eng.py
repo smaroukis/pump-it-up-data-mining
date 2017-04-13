@@ -61,8 +61,8 @@ def check_nulls(df):
     return df_nulls
 
 def create_merge_dict(df, colname, cutoff):
-    """takes in a list of strings and creates nested dict of key:[val1, val2...] where val_i is a fuzzy string match with key"""
-    _list=[i for i in df[colname].unique() if ((type(i)!=int) and (type(i)!=float))]
+    """takes data frame and column and creates nested dict of key:[val1, val2...] where val_i is a fuzzy string match with key"""
+    _list=[i.lower() for i in df[colname].unique() if ((type(i)!=int) and (type(i)!=float))]
     _list=sorted(_list)
     print("--create_merge_dict()--> creating nested dict of strings to merge\n")
     print("---> Number of items in the list to merge: {} \n".format(len(_list)))
@@ -98,17 +98,18 @@ def create_merge_dict(df, colname, cutoff):
                     break
             return check_dict
 
-def merge_replace(_df, _merge_dict, _col):
+def merge_replace(_df, colname, merge_dict): # TODO only returns 7 changes
     """takes in a dataframe and a dictionary (see create_merge_dict) and replaces all the list of values with the keys"""
-    for i in reversed(sorted(_merge_dict)):
-        against_list=list(_merge_dict[i])
+    df=_df
+    for i in reversed(sorted(merge_dict)):
+        against_list=list(merge_dict[i])
         # find in dataframe
-        _df[_col]=_df[_col].replace(against_list, i)
-    return _df
+        df[colname].replace(against_list, i, inplace=True)
+    print('\t merge_replace(): \n\t ----->  \t Number of Strings Left: {}'.format(len(df[colname].unique())))
+    return df
 
 def df_replace_emptystr(df, col_list=['funder','installer']):
-    return df.loc[:, col_list].replace(['','0',0,'-'], 'Other')
-
+    return df.loc[:, col_list].replace(['','0',0,'-'], 'null')
 
 if __name__=="__main__":
     pdb.set_trace()
