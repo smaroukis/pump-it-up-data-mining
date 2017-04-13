@@ -60,8 +60,9 @@ def check_nulls(df):
     df_nulls.columns(['Null','Zeros'])
     return df_nulls
 
-def create_merge_dict(_list, cutoff):
+def create_merge_dict(df, colname, cutoff):
     """takes in a list of strings and creates nested dict of key:[val1, val2...] where val_i is a fuzzy string match with key"""
+    _list=[i for i in df[colname].unique() if ((type(i)!=int) and (type(i)!=float))]
     _list=sorted(_list)
     print("--create_merge_dict()--> creating nested dict of strings to merge\n")
     print("---> Number of items in the list to merge: {} \n".format(len(_list)))
@@ -99,21 +100,22 @@ def create_merge_dict(_list, cutoff):
 
 def merge_replace(_df, _merge_dict, _col):
     """takes in a dataframe and a dictionary (see create_merge_dict) and replaces all the list of values with the keys"""
-    # TODO working on only replacing one column
-    df=_df
     for i in reversed(sorted(_merge_dict)):
         against_list=list(_merge_dict[i])
         # find in dataframe
-        df[_col]=df[_col].replace(against_list, i)
-    return df
+        _df[_col]=_df[_col].replace(against_list, i)
+    return _df
+
+def df_replace_emptystr(df, col_list=['funder','installer']):
+    return df.loc[:, col_list].replace(['','0',0,'-'], 'Other')
 
 
 if __name__=="__main__":
     pdb.set_trace()
 
     train=load_training_values()
-    installers = [i for i in train["installer"].unique() if ((type(i)!=int) and (type(i)!=float))]
-    merge_installers = create_merge_dict(installers, 79)
-    train2=merge_replace(train, merge_installers)
+    train=df_replace_emptystr(train)
+    merge_installers = create_merge_dict(train,'installer', 79)
+    train2=merge_replace(train, merge_installers, 'installer')
     diff = diff_df(train, train2)
     print(diff)
