@@ -85,3 +85,18 @@ def strings_to_ints(string_col, train_values):
 
 	train_values = train_values.applymap(lambda s: string_dict.get(s) if s in string_dict else s)
 	return train_values
+
+def strings_to_indicators(train_values):
+	"""Extends the given dataframe with a new column for each string in a string column"""
+	#Get list of string columns
+	columns = [i for i in train_values.columns if type(train_values[i].iloc[0]) == str]
+
+	#For each string column, create a new column for each unique string inside that column
+	#and convert the categorical variable into an indicator variable
+	for column in columns:
+		train_values = train_values[column].replace(0, np.nan)
+		new_columns = [column+'_'+i for i in train_values[column].unique()]
+		train_values = pd.concat((train_values, pd.get_dummies(train_values[column], prefix = column)[new_columns]), axis = 1)
+		del train_values[column]
+
+	return train_values
