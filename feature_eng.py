@@ -130,7 +130,7 @@ def merge_replace(_df, colname, merge_dict): # TODO only returns 7 changes
     return df
 
 def df_replace_emptystr(df, col_list=['funder','installer']):
-    df=df.loc[:, col_list].replace(['','0',0,'-'], 'null')
+    df.loc[:, col_list]=df.loc[:, col_list].replace(['','0',0,'-'], 'null')
     return df
 
 if __name__=="__main__":

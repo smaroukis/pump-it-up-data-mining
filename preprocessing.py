@@ -2,6 +2,7 @@ from feature_eng import *
 from sandy_eng import *
 
 if __name__=="__main__":
+    pdb.set_trace()
 
     # import data
     train_values=load_training_values()
@@ -14,8 +15,6 @@ if __name__=="__main__":
     #train_new=zeros_public_meeting(train_new)
     train_new=zeros_permit(train_new)
     train_new=zeros_means(train_new)
-
-    pdb.set_trace()
 
     # Replace Empty Strings
     train_new=df_replace_emptystr(train_new)
