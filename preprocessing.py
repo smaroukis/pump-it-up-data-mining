@@ -2,7 +2,6 @@ from feature_eng import *
 from sandy_eng import *
 
 if __name__=="__main__":
-    pdb.set_trace()
 
     # import data
     train_values=load_training_values()
@@ -22,5 +21,7 @@ if __name__=="__main__":
     # Fuzzy String Matching for Installer, Funder
 
     #  Create Dummy Columns
+    pdb.set_trace()
+    train_new=strings_to_indicators(train_new)
 
     df_nulls=check_nulls(train_new)
