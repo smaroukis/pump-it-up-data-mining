@@ -94,7 +94,7 @@ def strings_to_indicators(train_values):
 	#For each string column, create a new column for each unique string inside that column
 	#and convert the categorical variable into an indicator variable
 	for column in columns:
-		train_values = train_values[column].replace(0, np.nan)
+		train_values[column] = train_values[column].replace(0, np.nan)
 		new_columns = [column+'_'+i for i in train_values[column].unique()]
 		train_values = pd.concat((train_values, pd.get_dummies(train_values[column], prefix = column)[new_columns]), axis = 1)
 		del train_values[column]
