@@ -58,7 +58,29 @@ def check_nulls(df):
     df_nulls=pd.concat([nulls, zeros], axis=1)
     df_nulls=df_nulls.loc[(df_nulls!=0).any(axis=1)]
     df_nulls.columns(['Null','Zeros'])
+    print('Checking Null Dataframe...\n')
+    print(df_nulls)
     return df_nulls
+
+def deleteColumns(df, catList = ['extraction_type_group','extraction_type_class','quantity_group','quality_group','recorded_by',
+              'num_private','payment_type','waterpoint_type_group','scheme_name','amount_tsh']):
+    """ Function to delete columns from dataframe. Inputs are (1) dataframe, (2) matrix of stringss."""
+    for category in catList:
+        df = df.drop(category,1)
+    return df
+
+
+def avgConstrYear(df):
+    constrMean = df[df['construction_year'] > 0]['construction_year'].mean()
+    df['construction_year'] = df['construction_year'].replace(np.nan,constrMean)
+    df['construction_year'] = df['construction_year'].replace(0,constrMean)
+    return df
+
+def zeros_permit(df):
+	"""Replace zeros in public_meeting column with 'Neutral'"""
+	df['permit'] = df['permit'].replace(0, "null")
+	df['permit'] = df['permit'].replace(np.nan, "null")
+	return df
 
 def create_merge_dict(df, colname, cutoff):
     """takes data frame and column and creates nested dict of key:[val1, val2...] where val_i is a fuzzy string match with key"""

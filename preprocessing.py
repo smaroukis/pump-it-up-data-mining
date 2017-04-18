@@ -1,11 +1,10 @@
 from feature_eng import *
 from sandy_eng import *
-from noah_eng import *
 
 if __name__=="__main__":
 
     # import data
-    train_values=load_train_values()
+    train_values=load_training_values()
     train_new=deleteColumns(train_values)
     # convert all strings to lowercase
     train_new=dataframe_tolower(train_new)
@@ -23,4 +22,4 @@ if __name__=="__main__":
 
     #  Create Dummy Columns
 
-    pass
+    df_nulls=check_nulls(train_new)
