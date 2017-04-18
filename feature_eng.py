@@ -57,7 +57,7 @@ def check_nulls(df):
     zeros=(df==0).sum(axis=0)
     df_nulls=pd.concat([nulls, zeros], axis=1)
     df_nulls=df_nulls.loc[(df_nulls!=0).any(axis=1)]
-    df_nulls.columns(['Null','Zeros'])
+    df_nulls.columns=['Null','Zeros']
     print('Checking Null Dataframe...\n')
     print(df_nulls)
     return df_nulls
@@ -68,7 +68,6 @@ def deleteColumns(df, catList = ['extraction_type_group','extraction_type_class'
     for category in catList:
         df = df.drop(category,1)
     return df
-
 
 def avgConstrYear(df):
     constrMean = df[df['construction_year'] > 0]['construction_year'].mean()
