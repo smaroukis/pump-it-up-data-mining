@@ -3,7 +3,7 @@ import numpy as np
 
 def zeros_means(train_values):
 	"""Returns the dataframe with the gps_height, longitude, latitude, and population columns edited to replace zeros with mean values"""
-
+	districts = [1,2,3,4,5,6,7,8,13,23,30,33,43,53,60,62,63,67]
 	district_values = train_values.filter(['district_code', 'gps_height','longitude','latitude','population'], axis=1)
 	district_values = district_values.sort_values(by='district_code')
 
