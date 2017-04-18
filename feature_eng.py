@@ -62,8 +62,8 @@ def check_nulls(df):
     print(df_nulls)
     return df_nulls
 
-def deleteColumns(df, catList = ['extraction_type_group','extraction_type_class','quantity_group','quality_group','recorded_by',
-              'num_private','payment_type','waterpoint_type_group','scheme_name','amount_tsh']):
+def deleteColumns(df, catList = ['extraction_type_group','extraction_type_class','quantity_group','source_type','quality_group','recorded_by',
+              'num_private','payment_type','waterpoint_type_group','scheme_name','amount_tsh', 'region_code', 'public_meeting']):
     """ Function to delete columns from dataframe. Inputs are (1) dataframe, (2) matrix of stringss."""
     for category in catList:
         df = df.drop(category,1)
@@ -130,7 +130,8 @@ def merge_replace(_df, colname, merge_dict): # TODO only returns 7 changes
     return df
 
 def df_replace_emptystr(df, col_list=['funder','installer']):
-    return df.loc[:, col_list].replace(['','0',0,'-'], 'null')
+    df=df.loc[:, col_list].replace(['','0',0,'-'], 'null')
+    return df
 
 if __name__=="__main__":
     pdb.set_trace()

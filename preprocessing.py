@@ -11,9 +11,11 @@ if __name__=="__main__":
 
     # Average over entire column and Replace zeros
     train_new=avgConstrYear(train_new)
-    train_new=zeros_public_meeting(train_new)
+    #train_new=zeros_public_meeting(train_new)
     train_new=zeros_permit(train_new)
     train_new=zeros_means(train_new)
+
+    pdb.set_trace()
 
     # Replace Empty Strings
     train_new=df_replace_emptystr(train_new)
