@@ -37,13 +37,13 @@ def zeros_permit(df):
 	df['permit'] = df['permit'].replace(np.nan, "null")
 	return df
 
-def convert_dates(df, date_col='date_recorded'): # TODO still working on
+def convert_dates(df, date_col='date_recorded'): 
     """ Given a dataframe and the column referencing date values, return a new dataframe with the dates converted to ordinal"""
-    dates=pd.to_datetime(train[date_col])
+    dates=pd.to_datetime(df[date_col])
     ords=dates.apply(lambda x: x.toordinal())
     ords_range=ords.max()-ords.min()
     # Convert to standard normal
-    ord_norm=ords.apply(labmda x: (x-ords.mean())/ords.std())
+    ord_norm=ords.apply(lambda x: (x-ords.mean())/ords.std())
     print('\t Dates have been converted: Descriptive Statistics:')
     print(ord_norm.describe())
 
