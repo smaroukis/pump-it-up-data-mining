@@ -101,3 +101,29 @@ def strings_to_indicators(train_values):
 		del train_values[column]
 
 	return train_values
+
+def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
+	"""Generates the overall accuracy with stratified k-fold cross validation and generates confusion matrices for each fold"""
+	mean_score = 0
+	crossval = StratifiedKFold(n_splits=num_folds, shuffle=False, random_state=None)
+
+	for train, test in crossval.split(X_train, Y_labels):
+	    k_pred = classifier.fit(X_train[train], Y_labels[train]).predict(X_train[test])
+
+	    """
+	    # Plot normalized confusion matrix for each fold
+	    cnf_matrix = confusion_matrix(Y_labels[test], k_pred)
+	    np.set_printoptions(precision=1)
+	    plt.figure()
+	    plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True, title='Normalized confusion matrix')
+	    plt.show()
+	    """
+
+	    # Accuracy of each fold
+	    score = accuracy_score(Y_labels[test], k_pred)
+
+	    # To compute mean accuracy over all folds
+	    mean_accuracy += accuracy
+
+	mean_accuracy = mean_accuracy / num_folds;
+	return mean_accuracy
