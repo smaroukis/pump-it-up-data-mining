@@ -165,7 +165,7 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 	    plt.figure()
 	    plot_confusion_matrix(cnf_matrix, classes=class_names, title='Non-Normalized Confusion Matrix Fold %d' %i)
 	    plt.show()
-	    
+
 	    # To compute mean confusion matrix
 	    mean_cnf += cnf_matrix
 
@@ -179,8 +179,8 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 
 	# Plot overall confusion matrix
 	plt.figure()
-    	plot_confusion_matrix(mean_cnf, classes=class_names, title='Normalized Overall Confusion Matrix')
-    	plt.show()
+	plot_confusion_matrix(mean_cnf, classes=class_names, title='Normalized Overall Confusion Matrix')
+	plt.show()
 	# Overall accuracy
 	mean_accuracy = mean_accuracy / num_folds;
 	return mean_accuracy
@@ -188,7 +188,7 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 
 def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 	"""Generates a cross-validated ROC curve for every class"""
-	
+
 	class_list = ['functional', 'nonfunctional', 'functional needs repair']
 
 	# Binarize the output
