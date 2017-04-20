@@ -117,6 +117,7 @@ def strings_to_indicators(train_values):
 		del train_values[column]
 
 	return train_values
+
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',
@@ -162,7 +163,7 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 	    cnf_matrix = confusion_matrix(Y_labels[test], k_pred)
 	    np.set_printoptions(precision=1)
 	    plt.figure()
-	    plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True, title='Normalized Confusion Matrix Fold %d' %i)
+	    plot_confusion_matrix(cnf_matrix, classes=class_names, title='Non-Normalized Confusion Matrix Fold %d' %i)
 	    plt.show()
 	    
 	    # To compute mean confusion matrix
@@ -176,11 +177,10 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 
 	    i += 1
 
-	# Overall confusion matrix
-	mean_cnf = mean_cnf / num_folds
+	# Plot overall confusion matrix
 	plt.figure()
-    plot_confusion_matrix(mean_cnf, classes=class_names, title='Normalized Overall Confusion Matrix')
-    plt.show()
+    	plot_confusion_matrix(mean_cnf, classes=class_names, title='Normalized Overall Confusion Matrix')
+    	plt.show()
 	# Overall accuracy
 	mean_accuracy = mean_accuracy / num_folds;
 	return mean_accuracy
