@@ -24,6 +24,5 @@ if __name__=="__main__":
 
     # Fuzzy String Matching for Installer, Funder
 
-
     #  Create Dummy Columns
     train_new=strings_to_indicators(train_new)

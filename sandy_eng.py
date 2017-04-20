@@ -106,6 +106,8 @@ def strings_to_indicators(train_values):
 	#Get list of string columns
 	columns = [i for i in train_values.columns if type(train_values[i].iloc[0]) == str]
 	assert(df_no_nulls(train_values.loc[:, columns]))
+	print('Converting the following features to dummies: \n \t')
+	pp(columns)
 	#For each string column, create a new column for each unique string inside that column
 	#and convert the categorical variable into an indicator variable
 	for column in columns:
