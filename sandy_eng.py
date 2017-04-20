@@ -154,23 +154,76 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 	mean_score = 0
 	crossval = StratifiedKFold(n_splits=num_folds, shuffle=False, random_state=None)
 
+	i = 0
 	for train, test in crossval.split(X_train, Y_labels):
 	    k_pred = classifier.fit(X_train[train], Y_labels[train]).predict(X_train[test])
 
-	    """
 	    # Plot normalized confusion matrix for each fold
 	    cnf_matrix = confusion_matrix(Y_labels[test], k_pred)
 	    np.set_printoptions(precision=1)
 	    plt.figure()
-	    plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True, title='Normalized confusion matrix')
+	    plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True, title='Normalized Confusion Matrix Fold %d' %i)
 	    plt.show()
-	    """
-
+	    
 	    # Accuracy of each fold
 	    score = accuracy_score(Y_labels[test], k_pred)
 
 	    # To compute mean accuracy over all folds
 	    mean_accuracy += accuracy
+	    i += 1
 
 	mean_accuracy = mean_accuracy / num_folds;
 	return mean_accuracy
+
+
+def crossval_ROC(classifier, num_folds, X_train, Y_labels, class_list):
+	"""Generates a cross-validated ROC curve for every class"""
+
+	# Binarize the output
+	y = label_binarize(Y_labels, classes=class_list)
+	n_classes = y.shape[1]
+
+	# Cross validation
+	crossval = StratifiedKFold(n_splits=num_folds, shuffle=False, random_state=None)
+
+	# For plot
+	lw = 2
+	colors = cycle(['cyan', 'indigo', 'seagreen', 'yellow', 'blue', 'darkorange'])
+
+	i = 0
+	# Compute ROC curve and ROC area for each class
+	for i in range(n_classes):
+	    fpr = dict()
+	    tpr = dict()
+	    roc_auc = dict()
+	    mean_tpr = 0.0
+	    mean_fpr = np.linspace(0, 1, 100)
+	    y_class = y[:, i]
+
+	    k = 0
+	    # For each class, split the data into folds for cross-validation
+	    for (train, test), color in zip(crossval.split(X_train, y_class), colors):
+	        y_score = classifier.fit(X_train[train], y_class[train]).decision_function(X_train[test])
+	        fpr[i], tpr[i], _ = roc_curve(y_class[test], y_score)
+	        roc_auc[i] = auc(fpr[i], tpr[i])
+	        mean_tpr += interp(mean_fpr, fpr[i], tpr[i])
+	        mean_tpr[0] = 0.0
+	        plt.plot(fpr[i], tpr[i], color=color, lw=lw, label='ROC fold %d (area = %0.2f)' % (k,roc_auc[i]))
+	        k += 1
+
+	    # Plot mean ROC for each class
+	    mean_tpr /= crossval.get_n_splits(X, y)
+	    mean_tpr[-1] = 1.0
+	    mean_auc = auc(mean_fpr, mean_tpr)
+	    plt.plot(mean_fpr, mean_tpr, color='g', linestyle='--', label='Mean ROC (area = %0.2f)' % mean_auc, lw=lw)
+
+	    # Main plot info
+	    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+	    plt.xlim([0.0, 1.0])
+	    plt.ylim([0.0, 1.05])
+	    plt.xlabel('False Positive Rate')
+	    plt.ylabel('True Positive Rate')
+	    plt.title(class_list[i] + ' ROC')
+	    plt.legend(loc="lower right")
+	    plt.show()
+	    i += 1
