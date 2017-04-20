@@ -3,7 +3,7 @@ from sandy_eng import *
 import ipdb
 
 if __name__=="__main__":
-
+    ipdb.set_trace()
     # import data
     train_values=load_training_values()
     train_new=deleteColumns(train_values)
@@ -17,7 +17,7 @@ if __name__=="__main__":
     train_new=zeros_means(train_new)
     train_new=remove_low_frequencies(train_new, 10)
 
-    #train_new=convert_dates(train_new)  # Takes awhile
+    train_new=convert_dates(train_new)  # Takes awhile
 
     # Replace Empty Strings
     train_new=df_replace_emptystr(train_new)
@@ -27,5 +27,3 @@ if __name__=="__main__":
 
     #  Create Dummy Columns
     train_new=strings_to_indicators(train_new)
-
-    ipdb.set_trace()

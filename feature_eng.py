@@ -107,7 +107,7 @@ def df_replace_emptystr(df):
     return df
 
 def remove_low_frequencies(df, cutoff=20):
-    cols = [i for i in df.columns if type(df[i].iloc[0]==str]
+    cols = [i for i in df.columns if type(df[i].iloc[0])==str]
     df[cols] = df[cols].where(df[cols].apply(lambda x: x.map(x.value_counts())) > cutoff, "Other")
     return df
 
