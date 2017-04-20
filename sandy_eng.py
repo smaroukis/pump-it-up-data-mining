@@ -1,5 +1,19 @@
 import pandas as pd
 import numpy as np
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import StratifiedKFold
+from sklearn.preprocessing import label_binarize
+from sklearn.metrics import roc_curve, auc, accuracy_score
+from sklearn import datasets
+from sklearn import svm
+import itertools
+from itertools import cycle
+from scipy import interp
 from validation import *
 
 def zeros_means(train_values):
