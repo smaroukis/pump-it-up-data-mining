@@ -117,7 +117,6 @@ def strings_to_indicators(train_values):
 		del train_values[column]
 
 	return train_values
-
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',
@@ -151,7 +150,8 @@ def plot_confusion_matrix(cm, classes,
 
 def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 	"""Generates the overall accuracy with stratified k-fold cross validation and generates confusion matrices for each fold"""
-	mean_score = 0
+	mean_accuracy = 0
+	mean_cnf = 0
 	crossval = StratifiedKFold(n_splits=num_folds, shuffle=False, random_state=None)
 
 	i = 0
@@ -165,19 +165,31 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 	    plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True, title='Normalized Confusion Matrix Fold %d' %i)
 	    plt.show()
 	    
+	    # To compute mean confusion matrix
+	    mean_cnf += cnf_matrix
+
 	    # Accuracy of each fold
 	    score = accuracy_score(Y_labels[test], k_pred)
 
 	    # To compute mean accuracy over all folds
-	    mean_accuracy += accuracy
+	    mean_accuracy += score
+
 	    i += 1
 
+	# Overall confusion matrix
+	mean_cnf = mean_cnf / num_folds
+	plt.figure()
+    plot_confusion_matrix(mean_cnf, classes=class_names, title='Normalized Overall Confusion Matrix')
+    plt.show()
+	# Overall accuracy
 	mean_accuracy = mean_accuracy / num_folds;
 	return mean_accuracy
 
 
-def crossval_ROC(classifier, num_folds, X_train, Y_labels, class_list):
+def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 	"""Generates a cross-validated ROC curve for every class"""
+	
+	class_list = ['functional', 'nonfunctional', 'functional needs repair']
 
 	# Binarize the output
 	y = label_binarize(Y_labels, classes=class_list)
