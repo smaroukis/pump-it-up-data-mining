@@ -37,7 +37,7 @@ def zeros_permit(df):
 	df['permit'] = df['permit'].replace(np.nan, "null")
 	return df
 
-def convert_dates(df, date_col='date_recorded'): 
+def convert_dates(df, date_col='date_recorded'):
     """ Given a dataframe and the column referencing date values, return a new dataframe with the dates converted to ordinal"""
     dates=pd.to_datetime(df[date_col])
     ords=dates.apply(lambda x: x.toordinal())
@@ -99,8 +99,16 @@ def merge_replace(_df, colname, merge_dict): # TODO only returns 7 changes
     print('\t merge_replace(): \n\t ----->  \t Number of Strings Left: {}'.format(len(df[colname].unique())))
     return df
 
-def df_replace_emptystr(df, col_list=['funder','installer']):
-    df.loc[:, col_list]=df.loc[:, col_list].replace(['','0',0,'-'], 'null')
+def df_replace_emptystr(df):
+    # Get all columns with strings
+    columns = [i for i in df.columns if type(df[i].iloc[0]) == str]
+    df.loc[:, columns]=df.loc[:, columns].fillna('Other')
+    df.loc[:, columns]=df.loc[:, columns].replace(['','0',0,'-'], 'Other')
+    return df
+
+def remove_low_frequencies(df, cutoff=20):
+    cols = [i for i in df.columns if type(df[i].iloc[0]==str]
+    df[cols] = df[cols].where(df[cols].apply(lambda x: x.map(x.value_counts())) > cutoff, "Other")
     return df
 
 if __name__=="__main__":

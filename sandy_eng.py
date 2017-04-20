@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from validation import *
 
 def zeros_means(train_values):
 	"""Returns the dataframe with the gps_height, longitude, latitude, and population columns edited to replace zeros with mean values"""
@@ -90,7 +91,7 @@ def strings_to_indicators(train_values):
 	"""Extends the given dataframe with a new column for each string in a string column"""
 	#Get list of string columns
 	columns = [i for i in train_values.columns if type(train_values[i].iloc[0]) == str]
-
+	assert(df_no_nulls(train_values.loc[:, columns]))
 	#For each string column, create a new column for each unique string inside that column
 	#and convert the categorical variable into an indicator variable
 	for column in columns:

@@ -39,7 +39,7 @@ def diff_df(df1,df2):
     df = pd.DataFrame({'from':chfrom, 'to':chto}, index=changed.index)
     return df.dropna()
 
-def check_nulls(df):
+def df_no_nulls(df):
     """ Returns pd.DataFrame of Null and Zero counts of an input dataframe"""
     nulls=df.isnull().sum(axis=0)
     zeros=(df==0).sum(axis=0)
@@ -47,5 +47,10 @@ def check_nulls(df):
     df_nulls=df_nulls.loc[(df_nulls!=0).any(axis=1)]
     df_nulls.columns=['Null','Zeros']
     print('Checking Null Dataframe...\n')
-    print(df_nulls)
-    return df_nulls
+    if df_nulls.empty:
+        print('\t No Nulls or Zeros')
+    else:
+        print('\t There are Nulls or Zeros')
+        print(df_nulls)
+
+    return df_nulls.empty
