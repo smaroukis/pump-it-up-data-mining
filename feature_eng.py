@@ -25,7 +25,7 @@ def deleteColumns(df, catList = ['extraction_type_group','extraction_type_class'
         df = df.drop(category,1)
     return df
 
-def avgConstrYear(df):
+def avgConstrYear(df): # TODO maybe avg within region
     constrMean = df[df['construction_year'] > 0]['construction_year'].mean()
     df['construction_year'] = df['construction_year'].replace(np.nan,constrMean)
     df['construction_year'] = df['construction_year'].replace(0,constrMean)
@@ -37,7 +37,7 @@ def zeros_permit(df):
 	df['permit'] = df['permit'].replace(np.nan, "null")
 	return df
 
-def convert_dates(df, date_col='date_recorded'):
+def convert_dates(df, date_col='date_recorded'): #TODO do for construction_year
     """ Given a dataframe and the column referencing date values, return a new dataframe with the dates converted to ordinal"""
     dates=pd.to_datetime(df[date_col])
     ords=dates.apply(lambda x: x.toordinal())
@@ -98,6 +98,12 @@ def merge_replace(_df, colname, merge_dict): # TODO only returns 7 changes
         df[colname].replace(against_list, i, inplace=True)
     print('\t merge_replace(): \n\t ----->  \t Number of Strings Left: {}'.format(len(df[colname].unique())))
     return df
+
+def fuzzy_string_match(df, colname, cutoff):
+    """Usage: fuzzy_string_match(df, colname, cutoff) | Uses fuzzywuzzy and token_sort_ratio to replace similar strings in a dataframe and column"""
+    merge_on=create_merge_dict(df, colname, cutoff)
+    df_merged=merge_replace(df, colname, merge_on)
+    return df_merged
 
 def df_replace_emptystr(df):
     # Get all columns with strings
