@@ -15,6 +15,14 @@ import itertools
 from itertools import cycle
 from scipy import interp
 from validation import *
+import pdb
+import datetime
+import os
+from sklearn.externals import joblib
+
+def now_as_string():
+	dt_now=datetime.datetime.now()
+	return dt_now.strftime('%b%d_%Hh%Mm')
 
 def zeros_means(train_values):
 	"""Returns the dataframe with the gps_height, longitude, latitude, and population columns edited to replace zeros with mean values"""
@@ -188,8 +196,11 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 
 def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 	"""Generates a cross-validated ROC curve for every class"""
+	results_dir='results_'+now_as_string()
+	if not os.path.isdir(results_dir):
+		os.makedirs(results_dir)
 
-	class_list = ['functional', 'nonfunctional', 'functional needs repair']
+	class_list = ['functional', 'non functional', 'functional needs repair']
 
 	# Binarize the output
 	y = label_binarize(Y_labels, classes=class_list)
@@ -202,8 +213,8 @@ def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 	lw = 2
 	colors = cycle(['cyan', 'indigo', 'seagreen', 'yellow', 'blue', 'darkorange'])
 
-	i = 0
-	# Compute ROC curve and ROC area for each class
+	i=0
+	# Compute ROC curve and ROC area for each class (i)
 	for i in range(n_classes):
 		fpr = dict()
 		tpr = dict()
@@ -212,10 +223,16 @@ def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 		mean_fpr = np.linspace(0, 1, 100)
 		y_class = y[:, i]
 		print('Class %d' %i)
+		pdb.set_trace()
 		k = 0
-		# For each class, split the data into folds for cross-validation
+		# For each class, split the data into folds (k) for cross-validation
 		for (train, test), color in zip(crossval.split(X_train, y_class), colors):
 			y_score = classifier.fit(X_train[train], y_class[train]).predict_proba(X_train[test])
+			#if y_score.shape[1]==1:
+			#	if (np.unique(y_score)==0):
+			#		y_score=np.stack((y_score,1+y_score),axis=1)
+			#	if (np.unique(y_score)==1):
+			#			y_score=np.stack((y_score,1-y_score),axis=1)
 			print('\t Fold #%d' %k)
 			print('\t')
 			print(y_score.shape)
@@ -239,7 +256,18 @@ def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 		plt.xlabel('False Positive Rate')
 		plt.ylabel('True Positive Rate')
 		plt.title(class_list[i] + ' ROC')
+		plt.savefig(os.path.join(results_dir,class_list[i] + 'ROC.png'))
 		plt.legend(loc="lower right")
 		plt.show()
 		i += 1
 		print('\n')
+
+if __name__=="__main__":
+
+	labels=load_training_labels()
+	data=pd.read_pickle('data_preprocessed1')
+	X=data.as_matrix()
+	y=labels["status_group"]
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.5, random_state=0)
+	rf32=joblib.load('rf32')
+	crossval_ROC(rf32, 5, X_train, y_train.values)
