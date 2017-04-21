@@ -179,7 +179,7 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels, class_names):
 
 	# Plot overall confusion matrix
 	plt.figure()
-	plot_confusion_matrix(mean_cnf, classes=class_names, title='Normalized Overall Confusion Matrix')
+	plot_confusion_matrix(mean_cnf, classes=class_names, title='Non-Normalized Overall Confusion Matrix')
 	plt.show()
 	# Overall accuracy
 	mean_accuracy = mean_accuracy / num_folds;
