@@ -99,7 +99,7 @@ def merge_replace(_df, colname, merge_dict): # TODO only returns 7 changes
     print('\t merge_replace(): \n\t ----->  \t Number of Strings Left: {}'.format(len(df[colname].unique())))
     return df
 
-def fuzzy_string_match(df, colname, cutoff):
+def fuzzy_string_match(df, colname, cutoff=79):
     """Usage: fuzzy_string_match(df, colname, cutoff) | Uses fuzzywuzzy and token_sort_ratio to replace similar strings in a dataframe and column"""
     merge_on=create_merge_dict(df, colname, cutoff)
     df_merged=merge_replace(df, colname, merge_on)
