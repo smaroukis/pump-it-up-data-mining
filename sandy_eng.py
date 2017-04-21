@@ -224,7 +224,7 @@ def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 	        k += 1
 
 	    # Plot mean ROC for each class
-	    mean_tpr /= crossval.get_n_splits(X, y)
+	    mean_tpr /= crossval.get_n_splits(X_train, y_class)
 	    mean_tpr[-1] = 1.0
 	    mean_auc = auc(mean_fpr, mean_tpr)
 	    plt.plot(mean_fpr, mean_tpr, color='g', linestyle='--', label='Mean ROC (area = %0.2f)' % mean_auc, lw=lw)
