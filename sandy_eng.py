@@ -215,7 +215,7 @@ def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 	    k = 0
 	    # For each class, split the data into folds for cross-validation
 	    for (train, test), color in zip(crossval.split(X_train, y_class), colors):
-	        y_score = classifier.fit(X_train[train], y_class[train]).decision_function(X_train[test])
+	        y_score = classifier.fit(X_train[train], y_class[train]).predict_proba(X_train[test])
 	        fpr[i], tpr[i], _ = roc_curve(y_class[test], y_score)
 	        roc_auc[i] = auc(fpr[i], tpr[i])
 	        mean_tpr += interp(mean_fpr, fpr[i], tpr[i])
