@@ -168,7 +168,7 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels):
 	mean_cnf = 0
 	crossval = StratifiedKFold(n_splits=num_folds, shuffle=False, random_state=None)
 
-	class_names = ['functional', 'non functional', 'functional needs repair']
+	class_names = ['functional', 'functional needs repair', 'non functional'] # switched to align with confusion matrix
 
 	i=0
 	for train, test in crossval.split(X_train, Y_labels):
@@ -177,13 +177,13 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels):
 		k_pred = classifier.fit(X_train[train], Y_labels[train]).predict(X_train[test])
 
 		# Plot normalized confusion matrix for each fold
-		cnf_matrix = confusion_matrix(Y_labels[test], k_pred, labels=class_names)
+		cnf_matrix = confusion_matrix(Y_labels[test], k_pred) # TODO try this with labels=class_names
 		np.set_printoptions(precision=1)
 		plt.figure()
 		plot_confusion_matrix(cnf_matrix, classes=class_names, title='Non-Normalized Confusion Matrix Fold %d' %i)
 		plt.savefig(os.path.join(results_dir,'Fold {} Confusion Matrix.png'.format(i)))
-		fig_obj=plt.gcf()
-		joblib.dump(fig_obj, os.path.join(results_dir,'fig_fold{}conf_mat'.format(i)))
+		#fig_obj=plt.gcf()
+		#joblib.dump(fig_obj, os.path.join(results_dir,'fig_fold{}conf_mat'.format(i)))
 		plt.show()
 
 		# To compute mean confusion matrix
@@ -201,8 +201,8 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels):
 	plt.figure()
 	plot_confusion_matrix(mean_cnf, classes=class_names, title='Non-Normalized Overall Confusion Matrix')
 	plt.savefig(os.path.join(results_dir, 'Summed Confusion Matrix.png'))
-	fig_obj=plt.gcf()
-	joblib.dump(fig_obj, os.path.join(results_dir,'fig_fold{}conf_mat'.format(i)))
+	#fig_obj=plt.gcf()
+	#joblib.dump(fig_obj, os.path.join(results_dir,'fig_fold{}conf_mat'.format(i)))
 	plt.show()
 	# Overall accuracy
 	mean_accuracy = mean_accuracy / num_folds;
@@ -275,8 +275,7 @@ def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 		plt.legend(loc="lower right")
 		plt.savefig(os.path.join(results_dir,class_list[i] + 'ROC.png'))
 		fig_obj=plt.gcf()
-		joblib.dump(fig_obj, os.path.join(results_dir, 'fig_ROC_class{}'.format(class_list[i]))
-		plt.show()
+		#joblib.dump(fig_obj, os.path.join(results_dir, 'fig_ROC_class{}'.format(class_list[i]))
 		i += 1
 		print('\n')
 
@@ -289,4 +288,4 @@ if __name__=="__main__":
 	#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.5, random_state=0)
 	rf32=joblib.load('rf32')
 	#crossval_cmatrices(rf32, 5, X, y)
-	crossval_ROC(rf32, 5, X_train, y_train.values)
+	crossval_ROC(rf32, 5, X, y.values)
