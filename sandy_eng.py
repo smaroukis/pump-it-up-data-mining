@@ -160,7 +160,8 @@ def plot_confusion_matrix(cm, classes,
 
 def crossval_cmatrices(classifier, num_folds, X_train, Y_labels):
 	"""Generates the overall accuracy with stratified k-fold cross validation and generates confusion matrices for each fold"""
-	results_dir='results_'+now_as_string()
+	date=now_as_string()
+	results_dir=os.path.join('results',date)
 	if not os.path.isdir(results_dir):
 		os.makedirs(results_dir)
 
@@ -212,7 +213,8 @@ def crossval_cmatrices(classifier, num_folds, X_train, Y_labels):
 
 def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 	"""Generates a cross-validated ROC curve for every class"""
-	results_dir='results_'+now_as_string()
+	date=now_as_string()
+	results_dir=os.path.join('results',date)
 	if not os.path.isdir(results_dir):
 		os.makedirs(results_dir)
 
@@ -274,7 +276,7 @@ def crossval_ROC(classifier, num_folds, X_train, Y_labels):
 		plt.title(class_list[i] + ' ROC')
 		plt.legend(loc="lower right")
 		plt.savefig(os.path.join(results_dir,class_list[i] + 'ROC.png'))
-		fig_obj=plt.gcf()
+		#fig_obj=plt.gcf()
 		#joblib.dump(fig_obj, os.path.join(results_dir, 'fig_ROC_class{}'.format(class_list[i]))
 		i += 1
 		print('\n')
@@ -287,5 +289,5 @@ if __name__=="__main__":
 	y=labels["status_group"]
 	#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.5, random_state=0)
 	rf32=joblib.load('rf32')
-	#crossval_cmatrices(rf32, 5, X, y)
-	crossval_ROC(rf32, 5, X, y.values)
+	crossval_cmatrices(rf32, 5, X, y)
+	#crossval_ROC(rf32, 5, X, y.values)
